@@ -30,7 +30,8 @@ public class SecuiriyConfig extends WebSecurityConfigurerAdapter {
 	        http.authorizeRequests()
 	        		.antMatchers("/user/**").permitAll()
 	        		.antMatchers("/leads/**").permitAll()
-	                .and().formLogin();
+	                .and().formLogin()
+	                .and().csrf().disable();
 	    }
 	 
 		/*
