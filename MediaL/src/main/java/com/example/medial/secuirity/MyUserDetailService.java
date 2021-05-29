@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.medial.entity.User;
 import com.example.medial.repository.UserRepository;
-import com.example.medial.service.UserService;
+import com.example.medial.serviceImpl.UserServiceImpl;
 
 
 

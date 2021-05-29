@@ -1,32 +1,36 @@
-package com.example.medial.service;
+package com.example.medial.DaoImpl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.medial.IDao.UserDao;
 import com.example.medial.entity.User;
 import com.example.medial.repository.UserRepository;
 
 @Service
-public class UserService {
-
-	@Autowired
-	UserRepository userr;
+public class UserDaoImpl implements UserDao {
 	
-	public void save(User user)
+	@Autowired
+	private UserRepository userr;
+	
+	@Override
+	public void saveUser(User user)
 	{
 		userr.save(user);
 	}
 	
+	@Override
 	public User getUser(int id)
 	{
 		return userr.findById(id).get();
 	}
 	
-	public List<User> getByCon(String con)
+	@Override
+	public List<User> getUserbyCon(String con)
 	{
-		List<User> user=userr.findByCountry(con);
-		return user;
+		return userr.findByCountry(con);
 	}
+	
 }

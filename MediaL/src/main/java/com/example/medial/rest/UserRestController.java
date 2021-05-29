@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.medial.IService.UserService;
 import com.example.medial.entity.User;
-import com.example.medial.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class UserRest {
+public class UserRestController {
 	
 	@Autowired
-	UserService users;
+	private UserService users;
 	
 	@GetMapping("create")
 	public String createUser(Model model)
