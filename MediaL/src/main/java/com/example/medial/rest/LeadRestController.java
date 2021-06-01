@@ -2,10 +2,13 @@ package com.example.medial.rest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,26 +33,50 @@ public class LeadRestController {
 	@Autowired
 	private LeadService leads;
 	
+	private RedisTemplate<String, Lead> redisTemplate;
+	private HashOperations hashOperation;
+	
+	public LeadRestController(RedisTemplate<String, Lead> redisTemplate) {
+		this.redisTemplate=redisTemplate;
+		hashOperation=redisTemplate.opsForHash();
+	}
+	
 	@GetMapping("/")
 	public List<Lead> getAllLead()
 	{
 		logger.info("List of Leads :");
 		return leads.findAll();
+		//return (List<Lead>) hashOperation.entries("LEAD");
+	}
+	
+	@GetMapping("/map")
+	public Map<Integer, Lead> getAll(){
+		return leads.rfindAll();
 	}
 	
 	@GetMapping("/lead/{id}")
 	public Lead getLead(@PathVariable int id) throws UserNotFoundException
 	{
-		Lead lead=leads.findById(id);
+		Lead lead=null;
+		lead=leads.rfindById(id);
+	//	lead=leads.findById(id);
 		if(lead==null)
 		{
-			logger.warn("lead with id :"+id+" does not exist.");
-			throw new UserNotFoundException("id: "+ id);
+			logger.warn("Not found from redis CHECKING FROM mysql");
+			lead=leads.findById(id);
+			if(lead!=null) {
+				logger.info("Found from mysql,adding into redis");
+				hashOperation.put("LEAD", lead.getLead_id(), lead);
+			}
+			else {
+				logger.warn("lead with id :"+id+" does not exist.");
+				throw new UserNotFoundException("id: "+ id);
+			}
 		}
-		else {
+
 		logger.info("Showing lead with lead id :"+id);
 		return lead;
-		}	
+		
 	}	
 	
 
@@ -57,8 +84,19 @@ public class LeadRestController {
 	public String delete(@PathVariable int id)
 	{	
 		logger.info("Deleting lead with lead id :"+id);
-		Lead lead=leads.findById(id);
-		leads.delete(lead);
+	//	Lead lead=leads.findById(id);
+	//	leads.delete(lead);
+		
+		Lead lead=leads.rfindById(id);
+		Lead lead2=leads.findById(id);
+		if( (lead!=null)&&(lead2!=null)&&(lead.getLead_id()==lead2.getLead_id()) ) {
+			logger.info("Lead is present in mysql also.Deleting it");
+		leads.rdelete(lead);
+		leads.delete(lead2);
+		}
+		
+		leads.rdelete(lead);
+		
 		return "Lead with "+lead.getLead_id()+" is deleted";
 	}
 	
@@ -66,17 +104,19 @@ public class LeadRestController {
 	public Lead save(@RequestBody Lead lead)
 	{
 		logger.info("Saving Lead :");
-		leads.save(lead);
+	//	leads.save(lead);
+		leads.rsave(lead);
 		logger.info("Lead with id :"+lead.getLead_id()+" has been saved");
 		return lead;
-	//	return "New lead is saved";
 	}
+	
 	
 	@PutMapping("/update")
 	public String update(@RequestBody Lead lead)
 	{
 		logger.info("Updating Lead :");
-		leads.update(lead);
+		leads.rsave(lead);
+		logger.info("Lead is updated");
 		return "Lead is updated";
 	}
 	

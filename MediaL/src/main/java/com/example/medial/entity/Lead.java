@@ -1,10 +1,12 @@
 package com.example.medial.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Lead {
+public class Lead implements Serializable {
 	
 	@Id
 	//@GeneratedValue(strategy = GenerationType.SEQUENCE)

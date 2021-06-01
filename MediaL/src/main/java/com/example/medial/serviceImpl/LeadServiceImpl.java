@@ -1,6 +1,8 @@
 package com.example.medial.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,22 @@ public class LeadServiceImpl implements LeadService {
 	public List<Lead> findAll() {
 		return leadr.allLead();
 	}
+	
+	@Override
+	public Map<Integer,Lead> rfindAll()
+	{
+		return leadr.rallLead();
+	}
 
 	@Override
 	public void save(Lead entity) {
 		leadr.saveLead(entity);
+	}
+	
+	@Override
+	public void rsave(Lead lead)
+	{
+		leadr.rsaveLead(lead);
 	}
 
 	@Override
@@ -34,11 +48,27 @@ public class LeadServiceImpl implements LeadService {
 	}
 	
 	@Override
+	public Lead rfindById(int id)
+	{
+		Lead lead=leadr.rgetLead(id);
+		return lead;
+	}
+	
+	@Override
 	public void delete(Lead lead)
 	{
 		if(lead==null)
 			throw new RuntimeException("USER NOT FOUND");
 		leadr.deleteLead(lead);
+	}
+	
+	@Override
+	public void rdelete(Lead lead)
+	{
+		if(lead==null)
+			throw new RuntimeException("USER NOT FOUND");
+		
+		leadr.rdeleteLead(lead);
 	}
 	
 	@Override
