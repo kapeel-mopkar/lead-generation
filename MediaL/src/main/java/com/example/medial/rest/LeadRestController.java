@@ -1,6 +1,7 @@
 package com.example.medial.rest;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medial.IService.LeadService;
 import com.example.medial.entity.Lead;
+import com.example.medial.publisher.Publisher;
 import com.example.medial.rest.exception.UserNotFoundException;
 
 @RestController
@@ -33,24 +36,29 @@ public class LeadRestController {
 	@Autowired
 	private LeadService leads;
 	
-	private RedisTemplate<String, Lead> redisTemplate;
-	private HashOperations hashOperation;
+	@Autowired
+	private Publisher publisher;
 	
-	public LeadRestController(RedisTemplate<String, Lead> redisTemplate) {
-		this.redisTemplate=redisTemplate;
-		hashOperation=redisTemplate.opsForHash();
-	}
-	
+
 	@GetMapping("/")
 	public List<Lead> getAllLead()
 	{
 		logger.info("List of Leads :");
+		
 		return leads.findAll();
 		//return (List<Lead>) hashOperation.entries("LEAD");
 	}
 	
 	@GetMapping("/map")
 	public Map<Integer, Lead> getAll(){
+		logger.info("Showing list of leads from redis");
+		
+		List<Lead> Lead=leads.findAll();
+		
+		Lead.forEach((lead)->{
+			logger.info("Publishing Lead");
+			publisher.publish(lead);
+		});
 		return leads.rfindAll();
 	}
 	
@@ -59,14 +67,15 @@ public class LeadRestController {
 	{
 		Lead lead=null;
 		lead=leads.rfindById(id);
-	//	lead=leads.findById(id);
+		System.out.println("LEAD IS "+lead);
+		//lead=leads.findById(id);
 		if(lead==null)
 		{
 			logger.warn("Not found from redis CHECKING FROM mysql");
 			lead=leads.findById(id);
 			if(lead!=null) {
 				logger.info("Found from mysql,adding into redis");
-				hashOperation.put("LEAD", lead.getLead_id(), lead);
+				leads.rsave(lead);
 			}
 			else {
 				logger.warn("lead with id :"+id+" does not exist.");
@@ -131,6 +140,8 @@ public class LeadRestController {
 		logger.info("Showing lead with lead id :"+id);
 		return new ResponseEntity<Lead>(lead,HttpStatus.OK);
 	}	*/
+	
+	
 	
 }
 

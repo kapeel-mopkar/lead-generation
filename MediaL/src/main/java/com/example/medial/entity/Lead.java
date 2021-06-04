@@ -8,6 +8,9 @@ import javax.persistence.Id;
 @Entity
 public class Lead implements Serializable {
 	
+	
+	
+	private static final long serialVersionUID = 1L;
 	@Id
 	//@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int lead_id;
@@ -114,6 +117,12 @@ public class Lead implements Serializable {
 		this.email = email;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Lead [lead_id=" + lead_id + ", full_name=" + full_name + ", company_name=" + company_name
+				+ ", job_title=" + job_title + ", department=" + department + ", add1=" + add1 + ", add2=" + add2
+				+ ", pincode=" + pincode + ", city=" + city + ", phone=" + phone + ", email=" + email + "]";
+	}		
+		
 	
 }

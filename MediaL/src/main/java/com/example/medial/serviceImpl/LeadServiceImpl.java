@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import com.example.medial.IDao.LeadDao;
@@ -11,6 +14,7 @@ import com.example.medial.IService.LeadService;
 import com.example.medial.entity.Lead;
 
 @Service
+@EnableCaching
 public class LeadServiceImpl implements LeadService {
 
 	@Autowired
@@ -48,6 +52,7 @@ public class LeadServiceImpl implements LeadService {
 	}
 	
 	@Override
+	@Cacheable(key = "#id",value = "LEAD")
 	public Lead rfindById(int id)
 	{
 		Lead lead=leadr.rgetLead(id);
@@ -63,6 +68,7 @@ public class LeadServiceImpl implements LeadService {
 	}
 	
 	@Override
+	@CacheEvict(key = "#id", value = "LEAD")
 	public void rdelete(Lead lead)
 	{
 		if(lead==null)
