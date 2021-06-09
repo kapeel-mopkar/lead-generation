@@ -1,4 +1,4 @@
-package com.example.medial.IDao;
+package com.example.medial.idao;
 
 import java.util.List;
 

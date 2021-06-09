@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.medial.IService.UserService;
 import com.example.medial.entity.User;
+import com.example.medial.iservice.UserService;
 
 @Controller
 @RequestMapping("/user")

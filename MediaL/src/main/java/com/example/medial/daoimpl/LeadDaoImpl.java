@@ -1,21 +1,25 @@
-package com.example.medial.DaoImpl;
+package com.example.medial.daoimpl;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.example.medial.IDao.LeadDao;
 import com.example.medial.entity.Lead;
+import com.example.medial.idao.LeadDao;
 import com.example.medial.repository.LeadRepository;
 
 @Service
 public class LeadDaoImpl implements LeadDao{
 		
+	private Logger logger=LoggerFactory.getLogger(LeadDaoImpl.class);
+	
 	@Autowired
 	private LeadRepository leadr;
 	
@@ -56,13 +60,13 @@ public class LeadDaoImpl implements LeadDao{
 	public Lead getLead(int id)
 	{
 		Lead lead=leadr.findById(id).orElse(null);
-
 		return lead;
 	}
 	
 	@Override
 	public Lead rgetLead(int id)
 	{
+		logger.info("Calling from DB");
 		Lead lead=(Lead) hashOperation.get("LEAD", id);
 		return lead;
 	}

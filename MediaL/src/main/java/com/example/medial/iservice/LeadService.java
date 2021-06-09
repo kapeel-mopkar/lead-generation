@@ -1,4 +1,4 @@
-package com.example.medial.IService;
+package com.example.medial.iservice;
 
 import java.util.List;
 import java.util.Map;

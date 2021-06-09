@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.medial.IDao.UserDao;
-import com.example.medial.IService.UserService;
 import com.example.medial.entity.User;
+import com.example.medial.idao.UserDao;
+import com.example.medial.iservice.UserService;
 import com.example.medial.repository.UserRepository;
 
 @Service
