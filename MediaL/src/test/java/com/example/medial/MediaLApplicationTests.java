@@ -22,8 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.medial.IService.LeadService;
 import com.example.medial.entity.Lead;
+import com.example.medial.iservice.LeadService;
 import com.example.medial.repository.LeadRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

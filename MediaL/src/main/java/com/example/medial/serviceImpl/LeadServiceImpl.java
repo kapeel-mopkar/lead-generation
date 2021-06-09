@@ -9,9 +9,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
-import com.example.medial.IDao.LeadDao;
-import com.example.medial.IService.LeadService;
 import com.example.medial.entity.Lead;
+import com.example.medial.idao.LeadDao;
+import com.example.medial.iservice.LeadService;
 
 @Service
 @EnableCaching

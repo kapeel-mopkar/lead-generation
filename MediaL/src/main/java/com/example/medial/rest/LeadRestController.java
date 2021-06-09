@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.medial.IService.LeadService;
 import com.example.medial.entity.Lead;
+import com.example.medial.iservice.LeadService;
 import com.example.medial.publisher.Publisher;
 import com.example.medial.rest.exception.UserNotFoundException;
 

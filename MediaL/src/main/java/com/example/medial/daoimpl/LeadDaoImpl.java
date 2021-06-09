@@ -1,4 +1,4 @@
-package com.example.medial.DaoImpl;
+package com.example.medial.daoimpl;
 
 import java.util.List;
 import java.util.Map;
@@ -11,8 +11,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.example.medial.IDao.LeadDao;
 import com.example.medial.entity.Lead;
+import com.example.medial.idao.LeadDao;
 import com.example.medial.repository.LeadRepository;
 
 @Service

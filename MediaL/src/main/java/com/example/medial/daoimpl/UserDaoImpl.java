@@ -1,12 +1,12 @@
-package com.example.medial.DaoImpl;
+package com.example.medial.daoimpl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.medial.IDao.UserDao;
 import com.example.medial.entity.User;
+import com.example.medial.idao.UserDao;
 import com.example.medial.repository.UserRepository;
 
 @Service
